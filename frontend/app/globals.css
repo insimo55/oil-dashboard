@@ -1,0 +1,24 @@
+/* frontend/app/globals.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  body {
+    background-color: #ffffff; /* Фоновый цвет по умолчанию, если анимация не поддерживается */
+    background-image: 
+      radial-gradient(circle at 15% 50%, #bcd9ff 0%, transparent 15%), 
+      radial-gradient(circle at 85% 30%, #d0ffe05d 0%, transparent 15%);
+    background-repeat: no-repeat;
+    background-size: 200% 200%;
+    animation: gradient-animation 15s ease infinite;
+  }
+}
+
+@keyframes gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
