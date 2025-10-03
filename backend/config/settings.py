@@ -35,7 +35,11 @@ else:
     # Для локальной разработки
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-
+CSRF_TRUSTED_ORIGINS = []
+if not DEBUG:
+    trusted_origin = os.environ.get('CSRF_TRUSTED_ORIGIN')
+    if trusted_origin:
+        CSRF_TRUSTED_ORIGINS.append(trusted_origin)
 # Application definition
 
 INSTALLED_APPS = [
