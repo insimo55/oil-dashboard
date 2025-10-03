@@ -132,14 +132,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    # Разрешаем обращение с нашего фронтенда (порт 3000)
-    "http://localhost:3000", 
-]
+CORS_ALLOWED_ORIGINS = []
 if not DEBUG:
-    CORS_ALLOWED_ORIGINS = [
-        os.environ.get('CORS_ALLOWED_ORIGIN')
-    ]
+    # Берем origin из переменной окружения
+    allowed_origin = os.environ.get('CORS_ALLOWED_ORIGIN')
+    # И добавляем в список, только если переменная реально существует
+    if allowed_origin:
+        CORS_ALLOWED_ORIGINS.append(allowed_origin)
 else:
     # Для локальной разработки
     CORS_ALLOWED_ORIGINS = [
