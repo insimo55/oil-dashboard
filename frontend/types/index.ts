@@ -25,4 +25,5 @@ export interface Task {
   deadline: string; // ISO-строка
   is_completed: boolean;
   is_urgent: boolean;
+  details: string | null;
 }

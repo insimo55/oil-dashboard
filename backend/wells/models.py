@@ -48,6 +48,8 @@ class Task(models.Model):
     customer = models.CharField(max_length=255, verbose_name="Заказчик/Контекст", blank=True)
     deadline = models.DateTimeField(verbose_name="Срок выполнения")
     
+    details = models.TextField(verbose_name="Подробная информация", blank=True, null=True)
+    
     is_completed = models.BooleanField(default=False, verbose_name="Выполнена")
     is_urgent = models.BooleanField(default=False, verbose_name="Срочная")
 

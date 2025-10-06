@@ -13,4 +13,4 @@ class WellAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('title', 'customer', 'deadline', 'is_urgent', 'is_completed')
     list_filter = ('is_urgent', 'is_completed', 'customer')
-    search_fields = ('title', 'customer')
+    search_fields = ('title', 'customer','details')
