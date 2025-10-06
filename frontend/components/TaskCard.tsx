@@ -66,7 +66,7 @@ export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
             className="overflow-hidden"
           >
             <div className="prose prose-sm max-w-none text-gray-700 bg-gray-50/50 p-3 rounded-md mb-4">
-              <p>{task.details}</p>
+              <p className='whitespace-pre-line'>{task.details}</p>
             </div>
           </motion.div>
         )}
