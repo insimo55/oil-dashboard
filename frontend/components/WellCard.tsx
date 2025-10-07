@@ -24,7 +24,7 @@ const ProgressBar: React.FC<{ current: number; total: number }> = ({ current, to
 
 export const WellCard: React.FC<{ well: Well }> = ({ well }) => {
   // Определяем "статус" скважины по наличию проблем
-  const hasIssues = well.has_nvp || well.has_overspending;
+  const hasIssues = well.nvp_incidents.length > 0 || well.has_overspending;
   const statusColor = hasIssues ? 'border-red-500' : 'border-green-500';
   const engineerList = well.engineers ? well.engineers.split(',').map(name => name.trim()) : [];
   return (
@@ -34,11 +34,15 @@ export const WellCard: React.FC<{ well: Well }> = ({ well }) => {
           {/* Шапка карточки */}
           <div className="flex justify-between items-start mb-3">
             <h3 className="text-xl font-bold text-gray-800">{well.name}</h3>
-            {hasIssues ? (
-              <ExclamationTriangleIcon className="w-6 h-6 text-red-500" title="Есть проблемы" />
-            ) : (
-              <CheckCircleIcon className="w-6 h-6 text-green-500" title="Все в норме"/>
-            )}
+            <div className="flex items-center gap-2">
+          {well.nvp_incidents.length > 0 && (
+            <div className="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+              <ExclamationTriangleIcon className="w-4 h-4" />
+              НВП: {well.nvp_incidents.length}
+            </div>
+          )}
+          
+        </div>
           </div>
           
           {/* Прогресс бурения */}

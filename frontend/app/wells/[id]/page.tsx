@@ -4,6 +4,8 @@ import { getWellById } from '@/services/api'; // '@/' - это удобный п
 import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { formatDateTime } from '@/utils/formatters';
+import { HourBadge } from '@/components/HourBadge';
+import { formatDate } from '@/utils/formatters';
 
 // Эта страница, как и главная, будет асинхронным серверным компонентом
 export default async function WellDetailPage({ params }: { params: { id: string } }) {
@@ -67,8 +69,31 @@ export default async function WellDetailPage({ params }: { params: { id: string 
 
             {/* Правая колонка */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Статус</h3>
-              <StatusBlock title="НВП по нашей вине" status={well.has_nvp} details={well.nvp_details} />
+              <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Статус и Инциденты</h3>
+              <div>
+            <h4 className="font-semibold text-gray-700 mb-3">
+              Инциденты НВП ({well.nvp_incidents.length})
+            </h4>
+            {well.nvp_incidents.length > 0 ? (
+              <div className="space-y-4">
+                {well.nvp_incidents.map(incident => (
+                  <div key={incident.id} className="bg-gray-50 p-4 rounded-lg border">
+                    <div className="flex justify-between items-center mb-2">
+                      <p className="font-bold text-gray-800">
+                        НВП от {formatDate(incident.incident_date)}
+                      </p>
+                      <HourBadge duration={incident.duration} /> 
+                    </div>
+                    <p className="text-sm text-gray-600 whitespace-pre-line">
+                      {incident.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500 bg-green-50 p-4 rounded-lg border-green-200 border">Инцидентов не зафиксировано.</p>
+            )}
+          </div>
               <StatusBlock title="Перерасход средств" status={well.has_overspending} details={well.overspending_details} />
             </div>
           </div>

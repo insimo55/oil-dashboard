@@ -26,8 +26,8 @@ class Well(models.Model):
     
     current_operations = models.TextField(verbose_name="Текущие работы", blank=True)
     
-    has_nvp = models.BooleanField(default=False, verbose_name="Были ли НВП по нашей вине")
-    nvp_details = models.TextField(verbose_name="Информация по НВП", blank=True, null=True)
+    # has_nvp = models.BooleanField(default=False, verbose_name="Были ли НВП по нашей вине")
+    # nvp_details = models.TextField(verbose_name="Информация по НВП", blank=True, null=True)
     
     has_overspending = models.BooleanField(default=False, verbose_name="Есть ли перерасход")
     overspending_details = models.TextField(verbose_name="Информация по перерасходу", blank=True, null=True)
@@ -42,6 +42,22 @@ class Well(models.Model):
         verbose_name = "Скважина"
         verbose_name_plural = "Скважины"
         ordering = ['-updated_at']
+
+
+# НОВАЯ МОДЕЛЬ ДЛЯ ИНЦИДЕНТОВ НВП
+class NVPIncident(models.Model):
+    well = models.ForeignKey(Well, on_delete=models.CASCADE, related_name='nvp_incidents', verbose_name="Скважина")
+    incident_date = models.DateField(verbose_name="Дата инцидента")
+    duration = models.CharField(max_length=100, verbose_name="Потерянное время (текст)", blank=True)
+    description = models.TextField(verbose_name="Описание инцидента")
+
+    def __str__(self):
+        return f"НВП на {self.well.name} от {self.incident_date}"
+
+    class Meta:
+        verbose_name = "Инцидент НВП"
+        verbose_name_plural = "Инциденты НВП"
+        ordering = ['-incident_date'] # Сортируем от новых к старым
 
 class Task(models.Model):
     title = models.CharField(max_length=255, verbose_name="Название задачи")
