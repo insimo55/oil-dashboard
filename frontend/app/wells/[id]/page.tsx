@@ -6,6 +6,8 @@ import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { formatDateTime } from '@/utils/formatters';
 import { HourBadge } from '@/components/HourBadge';
 import { formatDate } from '@/utils/formatters';
+import Image from 'next/image';
+
 
 // Эта страница, как и главная, будет асинхронным серверным компонентом
 export default async function WellDetailPage({ params }: { params: { id: string } }) {
@@ -71,13 +73,23 @@ export default async function WellDetailPage({ params }: { params: { id: string 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Статус и Инциденты</h3>
               <div>
-            <h4 className="font-semibold text-gray-700 mb-3">
+            <div className='flex flex-row mb-2'>
+              <h4 className="font-semibold text-gray-700 mb-3">
               Инциденты НВП ({well.nvp_incidents.length})
+              
             </h4>
+            <Image
+                src="/angry_man.gif" // путь к файлу в public/gifs/time.gif
+                alt="Clock animation"
+                width={80}
+                height={80}
+                unoptimized // нужно, чтобы GIF-анимация не "замораживалась"
+              />
+            </div>
             {well.nvp_incidents.length > 0 ? (
               <div className="space-y-4">
                 {well.nvp_incidents.map(incident => (
-                  <div key={incident.id} className="bg-gray-50 p-4 rounded-lg border">
+                  <div key={incident.id} className="bg-neutral-200 p-4 rounded-lg border">
                     <div className="flex justify-between items-center mb-2">
                       <p className="font-bold text-gray-800">
                         НВП от {formatDate(incident.incident_date)}

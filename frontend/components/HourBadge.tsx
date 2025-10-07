@@ -9,10 +9,9 @@ export const HourBadge: React.FC<{ duration: string }> = ({ duration }) => {
   }
 
   return (
-    <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 font-bold px-3 py-1.5 rounded-full text-sm">
-      {/* Ты можешь вставить свою GIF с песочными часами сюда вместо иконки */}
-      <ClockIcon className="w-5 h-5" />
-      <span>{duration}</span>
+    <div className="flex items-center gap-2 bg-red-300 text-yellow-900 font-bold px-3 py-1.5 rounded-full text-sm">
+      
+      <span className='text-[17px]'>{duration}</span>
     </div>
   );
 };
