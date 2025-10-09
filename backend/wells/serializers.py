@@ -1,7 +1,7 @@
 # backend/wells/serializers.py
 
 from rest_framework import serializers
-from .models import Well,Task, NVPIncident 
+from .models import Well,Task, NVPIncident, Tender 
 
 class NVPIncidentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,4 +25,12 @@ class WellSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
+        fields = '__all__'
+
+class TenderSerializer(serializers.ModelSerializer):
+    # Добавляем "человеческое" имя статуса
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+
+    class Meta:
+        model = Tender
         fields = '__all__'

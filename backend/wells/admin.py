@@ -1,7 +1,7 @@
 # backend/wells/admin.py
 
 from django.contrib import admin
-from .models import Well, Task, NVPIncident
+from .models import Well, Task, NVPIncident, Tender 
 
 class NVPIncidentInline(admin.TabularInline):
     model = NVPIncident
@@ -23,3 +23,9 @@ class TaskAdmin(admin.ModelAdmin):
     list_display = ('title', 'customer', 'deadline', 'is_urgent', 'is_completed')
     list_filter = ('is_urgent', 'is_completed', 'customer')
     search_fields = ('title', 'customer','details')
+
+@admin.register(Tender)
+class TenderAdmin(admin.ModelAdmin):
+    list_display = ('name', 'status', 'deadline', 'updated_at')
+    list_filter = ('status',)
+    search_fields = ('name', 'notes')

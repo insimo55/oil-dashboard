@@ -1,6 +1,6 @@
 // frontend/services/api.ts
 
-import { Well, Task } from '../types';
+import { Well, Task,NVPIncident, Tender } from '../types';
 
 // Получаем URL нашего API из переменных окружения
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -52,6 +52,19 @@ export async function getTasks(): Promise<Task[]> {
     return await response.json();
   } catch (error) {
     console.error("Error fetching tasks:", error);
+    return [];
+  }
+}
+
+export async function getTenders(): Promise<Tender[]> {
+  try {
+    const response = await fetch(`${API_URL}/tenders/`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch tenders');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching tenders:", error);
     return [];
   }
 }

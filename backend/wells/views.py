@@ -1,8 +1,8 @@
 # backend/wells/views.py
-
+from django.db.models import Case, When, Value, F
 from rest_framework import viewsets
-from .models import Well,Task 
-from .serializers import WellSerializer,TaskSerializer 
+from .models import Well,Task, Tender 
+from .serializers import WellSerializer,TaskSerializer, TenderSerializer 
 
 
 class WellViewSet(viewsets.ReadOnlyModelViewSet):
@@ -19,3 +19,17 @@ class TaskViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Task.objects.filter(is_completed=False)
     serializer_class = TaskSerializer
+
+class TenderViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = TenderSerializer
+    
+    def get_queryset(self):
+        # Реализуем сложную сортировку
+        # Сначала "К загрузке", потом остальные
+        # Внутри "К загрузке" - по ближайшему дедлайну
+        return Tender.objects.annotate(
+            status_order=Case(
+                When(status='PENDING', then=Value(1)),
+                default=Value(2)
+            )
+        ).order_by('status_order', 'deadline')

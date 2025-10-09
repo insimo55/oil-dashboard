@@ -2,13 +2,14 @@
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import WellViewSet, TaskViewSet 
+from .views import WellViewSet, TaskViewSet, TenderViewSet 
 
 # Создаем роутер
 router = DefaultRouter()
 # Регистрируем наш ViewSet. 'wells' - это префикс URL
 router.register(r'wells', WellViewSet)
 router.register(r'tasks', TaskViewSet)
+router.register(r'tenders', TenderViewSet, basename='tender')
 
 # Наши URL-ы генерируются роутером автоматически
 urlpatterns = [

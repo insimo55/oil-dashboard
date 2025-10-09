@@ -34,3 +34,15 @@ export interface Task {
   is_urgent: boolean;
   details: string | null;
 }
+
+export type TenderStatus = 'PENDING' | 'TECH' | 'COMMERCIAL' | 'CONVERSATION' | 'WON' | 'LOST' | 'ARCHIVED';
+export interface Tender {
+  id: number;
+  name: string;
+  status: TenderStatus;  
+  status_display: string; // 'К загрузке', 'Тех. часть загружена', etc.
+  deadline: string | null; // ISO-строка даты
+  notes: string;
+  created_at: string;
+  updated_at: string;
+}

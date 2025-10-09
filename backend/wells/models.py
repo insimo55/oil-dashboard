@@ -79,3 +79,39 @@ class Task(models.Model):
         verbose_name = "Задача"
         verbose_name_plural = "Задачи"
         ordering = ['deadline'] # Сортируем по сроку выполнения
+
+
+class Tender(models.Model):
+    class Status(models.TextChoices):
+        PENDING_UPLOAD = 'PENDING', 'К загрузке'
+        TECH_SUBMITTED = 'TECH', 'Тех. часть загружена'
+        COMMERCIAL_SUBMITTED = 'COMMERCIAL', 'Ком. часть загружена'
+        COMMERCIAL_CONVERSATION = 'CONVERSATION', 'Переговоры по ком.части'
+        WON = 'WON', 'Выигран'
+        LOST = 'LOST', 'Проигран'
+        ARCHIVED = 'ARCHIVED', 'В архиве'
+
+    name = models.CharField(max_length=255, verbose_name="Наименование тендера")
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING_UPLOAD,
+        verbose_name="Этап"
+    )
+    deadline = models.DateTimeField(
+        verbose_name="Срок загрузки",
+        blank=True,
+        null=True  # Разрешаем не указывать дедлайн для статусов, где он не нужен
+    )
+    notes = models.TextField(verbose_name="Пояснение", blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Тендер"
+        verbose_name_plural = "Тендеры"
+        ordering = ['-updated_at']
