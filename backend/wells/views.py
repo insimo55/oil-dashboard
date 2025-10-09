@@ -1,8 +1,9 @@
 # backend/wells/views.py
-from django.db.models import Case, When, Value, F
+from django.db.models import Case, When, Value, F, BooleanField
 from rest_framework import viewsets
 from .models import Well,Task, Tender 
 from .serializers import WellSerializer,TaskSerializer, TenderSerializer 
+from django.utils import timezone
 
 
 class WellViewSet(viewsets.ReadOnlyModelViewSet):
@@ -24,12 +25,26 @@ class TenderViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = TenderSerializer
     
     def get_queryset(self):
-        # Реализуем сложную сортировку
-        # Сначала "К загрузке", потом остальные
-        # Внутри "К загрузке" - по ближайшему дедлайну
-        return Tender.objects.annotate(
-            status_order=Case(
-                When(status='PENDING', then=Value(1)),
-                default=Value(2)
+        """
+        Возвращает тендеры, отсортированные по следующей логике:
+        1. Сначала "Активные" тендеры (у которых есть дедлайн в будущем).
+           - Внутри этой группы сортируем по дедлайну (от ближайшего к дальнему).
+        2. Затем все остальные ("Неактивные").
+           - Внутри этой группы сортируем по дате обновления (от нового к старому).
+        """
+        now = timezone.now()
+        
+        queryset = Tender.objects.annotate(
+            # Создаем флаг "Активный"
+            is_active=Case(
+                When(deadline__isnull=False, deadline__gt=now, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField()
             )
-        ).order_by('status_order', 'deadline')
+        ).order_by(
+            F('is_active').desc(), # Сначала активные (True > False при сортировке по убыванию)
+            F('deadline').asc(nulls_last=True), # Затем по дедлайну (ближайшие сначала)
+            F('updated_at').desc() # В самом конце - по дате обновления
+        )
+        
+        return queryset
