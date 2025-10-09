@@ -14,7 +14,7 @@ const StatusBadge: React.FC<{ status: string; statusDisplay: string }> = ({ stat
     LOST: 'bg-red-100 text-red-800',
     ARCHIVED: 'bg-gray-100 text-gray-800',
   };
-  return <span className={clsx('px-3 py-1 text-xs font-medium rounded-full', colorClasses[status])}>{statusDisplay}</span>;
+  return <span className={clsx('px-3 py-1 text-xs font-medium rounded-full', colorClasses[status as TenderStatus])}>{statusDisplay}</span>;
 };
 
 export const TenderTable: React.FC<{ tenders: Tender[] }> = ({ tenders }) => {
