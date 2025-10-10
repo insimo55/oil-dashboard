@@ -36,7 +36,7 @@ export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
                 <span className="text-xs font-bold text-red-700 bg-red-200/70 px-2.5 py-1 rounded-full">
                   Срочно
                 </span>
-                <Image src="/alert.gif"  alt="attention animation" width={50} height={50} unoptimized className='absolute right-[20%] top-[4%]'/>
+                <Image src="/Alert.gif"  alt="attention animation" width={50} height={50} unoptimized className='absolute right-[20%] top-[4%]'/>
             </div>
 
         )}
