@@ -7,6 +7,7 @@ import { Task } from '../types';
 import { formatDate, formatTime } from '../utils/formatters';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -31,9 +32,13 @@ export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
           {task.customer}
         </p>
         {task.is_urgent && (
-          <span className="text-xs font-bold text-red-700 bg-red-200/70 px-2.5 py-1 rounded-full">
-            Срочно
-          </span>
+            <div className="">
+                <span className="text-xs font-bold text-red-700 bg-red-200/70 px-2.5 py-1 rounded-full">
+                  Срочно
+                </span>
+                <Image src="/alert.gif"  alt="attention animation" width={50} height={50} unoptimized className='absolute right-[20%] top-[4%]'/>
+            </div>
+
         )}
       </div>
 
