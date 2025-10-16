@@ -36,13 +36,13 @@ export const TendersPanel: React.FC<{ isOpen: boolean; onClose: () => void }> = 
             animate={{ x: 0 }}       // Выезжает на свое место
             exit={{ x: '100%' }}    // Уезжает обратно
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 h-full w-full max-w-[90%] bg-gray-50 shadow-2xl z-40 p-6 flex flex-col"
+            className="fixed top-0 right-0 h-full w-full max-w-[90%] bg-gray-50 shadow-2xl z-40 p-6 flex flex-col dark:bg-neutral-900/90 dark:border-l dark:border-neutral-800"
           >
             {/* Шапка панели */}
-            <div className="flex items-center justify-between pb-4 border-b mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Реестр тендеров</h2>
-              <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-200">
-                <XMarkIcon className="w-6 h-6 text-gray-600" />
+            <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-neutral-800 mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Реестр тендеров</h2>
+              <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-neutral-800">
+                <XMarkIcon className="w-6 h-6 text-gray-600 dark:text-gray-200" />
               </button>
             </div>
 

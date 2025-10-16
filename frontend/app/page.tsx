@@ -67,7 +67,7 @@ export default function Home() {
       />
       {/* БЛОК ЗАДАЧ */}
         <div className="mb-12">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-6">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-6 dark:text-gray-100">
           🔥 Актуальные задачи
         </h2>
         <motion.div 
@@ -95,7 +95,7 @@ export default function Home() {
 
 
       <div>
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-6">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-6 dark:text-gray-100">
           🛢️ Объекты в работе
         </h2>
         <motion.div 
