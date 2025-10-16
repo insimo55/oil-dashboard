@@ -53,10 +53,10 @@ export default function Home() {
       <div className="fixed top-20 right-0 z-20">
         <button 
           onClick={() => setIsTendersPanelOpen(true)}
-          className="bg-white/80 backdrop-blur-sm p-4 rounded-l-xl shadow-lg hover:bg-blue-50 transition-colors"
+          className="bg-white/80 backdrop-blur-sm p-4 rounded-l-xl shadow-lg hover:bg-blue-50 transition-colors dark:bg-neutral-800/80 dark:hover:bg-neutral-700/80"
           title="Реестр тендеров"
         >
-          <DocumentTextIcon className="w-6 h-6 text-blue-600" />
+          <DocumentTextIcon className="w-6 h-6 text-blue-600 dark:text-blue-300" />
         </button>
       </div>
 
