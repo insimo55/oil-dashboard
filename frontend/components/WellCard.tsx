@@ -24,7 +24,11 @@ const ProgressBar: React.FC<{ current: number; total: number }> = ({ current, to
 export const WellCard: React.FC<{ well: Well }> = ({ well }) => {
   // Определяем "статус" скважины по наличию проблем
   const hasIssues = well.nvp_incidents.length > 0 || well.has_overspending;
-  const statusColor = hasIssues ? 'border-red-500' : 'border-green-500';
+  const statusColor = !well.is_active
+    ? 'border-gray-400' // Серый для завершенных
+    : hasIssues
+    ? 'border-red-500'   // Красный для активных с проблемами
+    : 'border-green-500'; // Зеленый для активных без проблем
   const engineerList = well.engineers ? well.engineers.split(',').map(name => name.trim()) : [];
   return (
     <MotionWrap>
@@ -34,6 +38,11 @@ export const WellCard: React.FC<{ well: Well }> = ({ well }) => {
           <div className="flex justify-between items-start mb-3">
             <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">{well.name}</h3>
             <div className="flex items-center gap-2">
+            {!well.is_active && (
+              <span className="bg-gray-200 text-gray-800 text-xs font-bold px-2 py-1 rounded-full">
+                Завершен
+              </span>
+            )}
           {well.nvp_incidents.length > 0 && (
             <div className="bg-red-100 text-red-800 dark:bg-red-400/20 dark:text-red-300 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
               <ExclamationTriangleIcon className="w-4 h-4" />

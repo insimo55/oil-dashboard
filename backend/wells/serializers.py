@@ -15,7 +15,7 @@ class WellSerializer(serializers.ModelSerializer):
     class Meta:
         model = Well
         fields = [
-            'id', 'name', 'engineers', 'current_depth', 'planned_depth', 
+            'id', 'name', 'is_active', 'engineers', 'current_depth', 'planned_depth', 
             'current_section', 'current_section_display', 'current_operations', 
             'has_overspending', 'overspending_details', 'created_at', 'updated_at',
             'nvp_incidents' # <-- новое поле

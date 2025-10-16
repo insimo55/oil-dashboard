@@ -12,6 +12,7 @@ class WellSection(models.TextChoices):
 
 class Well(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название скважины/куста")
+    is_active = models.BooleanField(default=True, verbose_name="Объект в работе")
     engineers = models.TextField(verbose_name="ФИО инженеров", blank=True)
     
     current_depth = models.FloatField(default=0, verbose_name="Текущий забой (м)")

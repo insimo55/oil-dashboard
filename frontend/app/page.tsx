@@ -47,6 +47,10 @@ export default function Home() {
     fetchData();
   }, []);
 
+  const activeWells = wells.filter(well => well.is_active);
+  const completedWells = wells.filter(well => !well.is_active);
+
+
   return (
     <main className="mx-auto px-6 lg:px-10 py-8 relative">
       {/* КНОПКА ОТКРЫТИЯ ПАНЕЛИ */}
@@ -104,11 +108,38 @@ export default function Home() {
           initial="hidden"
           animate="visible"
         >
-          {wells.map(well => (
-            <motion.div key={well.id} variants={itemVariants}>
-              <WellCard well={well} />
-            </motion.div>
-          ))}
+          {activeWells.map(well => (
+              <motion.div key={well.id} variants={itemVariants}>
+                <WellCard well={well} />
+              </motion.div>
+            ))}
+        </motion.div>
+        {/* {wells && wells.length > 0 ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+            {wells.map(well => (
+              <WellCard key={well.id} well={well} />
+            ))}
+          </div>
+        ) : (
+          <p className='text-gray-500'>Нет данных по скважинам. Попробуйте добавить их в админ-панели.</p>
+        )} */}
+      </div>
+
+      <div>
+        <h2 className="text-3xl font-semibold tracking-tight text-gray-900 mt-6 mb-6 dark:text-gray-100">
+          ✅ Завершенные объекты
+        </h2>
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {completedWells.map(well => (
+              <motion.div key={well.id} variants={itemVariants}>
+                <WellCard well={well} />
+              </motion.div>
+            ))}
         </motion.div>
         {/* {wells && wells.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">

@@ -9,8 +9,8 @@ class NVPIncidentInline(admin.TabularInline):
 
 @admin.register(Well)
 class WellAdmin(admin.ModelAdmin):
-    list_display = ('name', 'current_depth', 'current_section','has_nvp_incidents',  'has_overspending', 'updated_at')
-    list_filter = ('current_section',  'has_overspending')
+    list_display = ('name', 'is_active', 'current_depth', 'current_section','has_nvp_incidents',  'has_overspending', 'updated_at')
+    list_filter = ('is_active', 'current_section',  'has_overspending')
     search_fields = ('name', 'engineers')
     inlines = [NVPIncidentInline]
     @admin.display(boolean=True, description='Наличие НВП')

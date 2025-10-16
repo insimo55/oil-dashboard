@@ -10,7 +10,7 @@ class WellViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows wells to be viewed.
     """
-    queryset = Well.objects.all()
+    queryset = Well.objects.order_by(F('is_active').desc(), F('updated_at').desc())
     serializer_class = WellSerializer
 
 class TaskViewSet(viewsets.ReadOnlyModelViewSet):

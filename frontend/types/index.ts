@@ -11,6 +11,7 @@ export interface NVPIncident {
 export interface Well {
   id: number;
   name: string;
+  is_active: boolean;
   engineers: string;
   current_depth: number;
   planned_depth: number;
