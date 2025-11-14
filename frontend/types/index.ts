@@ -24,6 +24,7 @@ export interface Well {
   created_at: string; // ISO-строка даты
   updated_at: string; // ISO-строка даты
   nvp_incidents: NVPIncident[];
+  last_summary_text: string | null;
 }
 
 export interface Task {

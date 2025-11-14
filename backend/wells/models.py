@@ -27,6 +27,7 @@ class Well(models.Model):
     
     current_operations = models.TextField(verbose_name="Текущие работы", blank=True)
     
+    last_summary_text = models.TextField(verbose_name="Последняя сводка", blank=True, null=True)
     # has_nvp = models.BooleanField(default=False, verbose_name="Были ли НВП по нашей вине")
     # nvp_details = models.TextField(verbose_name="Информация по НВП", blank=True, null=True)
     

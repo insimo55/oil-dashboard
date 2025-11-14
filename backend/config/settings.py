@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 
     # Сторонние библиотеки
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 ]
 

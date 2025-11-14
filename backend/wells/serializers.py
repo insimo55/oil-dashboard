@@ -18,7 +18,7 @@ class WellSerializer(serializers.ModelSerializer):
             'id', 'name', 'is_active', 'engineers', 'current_depth', 'planned_depth', 
             'current_section', 'current_section_display', 'current_operations', 
             'has_overspending', 'overspending_details', 'created_at', 'updated_at',
-            'nvp_incidents' # <-- новое поле
+            'nvp_incidents','last_summary_text' # <-- новое поле
         ] # Включаем все поля из модели в API
 
 
