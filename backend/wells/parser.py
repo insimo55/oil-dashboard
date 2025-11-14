@@ -12,9 +12,13 @@ def parse_summary(text: str) -> dict:
     # Они настроены на твой формат сводки.
     
     # 1. Название скважины (идентификатор)
-    well_name_match = re.search(r'(Куст\s*[\w\d.-]+,\s*скв\s*[\w\d.-]+)', text, re.IGNORECASE)
+    well_name_match = re.search(r'Куст\s*(\d+)[^\d]{0,10}(скв\.?|скважина)\s*(\d+)', text, re.IGNORECASE)
     if well_name_match:
-        data['name'] = well_name_match.group(1).strip()
+        well_num = well_name_match.group(1)
+        well_bore_num = well_name_match.group(3)
+
+    # формируем единый нормализованный формат
+        data['name'] = f"Куст {well_num} скважина {well_bore_num}"
 
     # 2. Инженеры
     engineers_match = re.search(r'Инженер по бр:\s*(.*)', text, re.IGNORECASE)
