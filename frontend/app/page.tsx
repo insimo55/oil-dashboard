@@ -3,7 +3,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Well, Task } from '../types';
 import { TaskCard } from '../components/TaskCard';
 import { WellCard } from '../components/WellCard'; // <-- Импортируем новую карточку
@@ -12,25 +11,7 @@ import { getWells,getTasks  } from '../services/api';
 import { TendersPanel } from '../components/TendersPanel';
 import { DocumentTextIcon } from '@heroicons/react/24/outline';
 
-// Конфигурация анимации
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1, // Задержка между появлением дочерних элементов
-    },
-  },
-};
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.5 }
-  },
-};
 
 export default function Home() {
   // Так как страница стала клиентской, данные грузим через useEffect
@@ -74,18 +55,15 @@ export default function Home() {
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-6 dark:text-gray-100">
           🔥 Актуальные задачи
         </h2>
-        <motion.div 
+        <div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
         >
           {tasks.map(task => (
-            <motion.div key={task.id} variants={itemVariants}>
+            <div key={task.id}>
               <TaskCard task={task} />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
         {/* {tasks && tasks.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tasks.map(task => (
@@ -102,18 +80,15 @@ export default function Home() {
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-6 dark:text-gray-100">
           🛢️ Объекты в работе
         </h2>
-        <motion.div 
+        <div 
           className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
         >
           {activeWells.map(well => (
-              <motion.div key={well.id} variants={itemVariants}>
+              <div key={well.id}>
                 <WellCard well={well} />
-              </motion.div>
+              </div>
             ))}
-        </motion.div>
+        </div>
         {/* {wells && wells.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {wells.map(well => (
@@ -129,18 +104,15 @@ export default function Home() {
         <h2 className="text-3xl font-semibold tracking-tight text-gray-900 mt-6 mb-6 dark:text-gray-100">
           ✅ Завершенные объекты
         </h2>
-        <motion.div 
+        <div 
           className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
         >
           {completedWells.map(well => (
-              <motion.div key={well.id} variants={itemVariants}>
+              <div key={well.id}>
                 <WellCard well={well} />
-              </motion.div>
+              </div>
             ))}
-        </motion.div>
+        </div>
         {/* {wells && wells.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {wells.map(well => (

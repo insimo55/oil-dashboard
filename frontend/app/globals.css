@@ -4,27 +4,68 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
+  /* 1. Убираем анимацию с самого body. 
+     Оставляем только базовый цвет, чтобы не было "пробелов" при загрузке. */
   body {
-    background-color: #ffffff; /* Фоновый цвет по умолчанию */
-    background-image: 
-      radial-gradient(circle at 15% 50%, #bcd9ff 0%, transparent 15%), 
-      radial-gradient(circle at 85% 30%, #d0ffe05d 0%, transparent 15%);
-    background-repeat: no-repeat;
-    background-size: 200% 200%;
-    animation: gradient-animation 15s ease infinite;
+    background-color: #ffffff; /* Светлая тема */
   }
+
   .dark body {
-    background-color: #d8000060;
+    background-color: #121212; /* Или любой другой темный фон */
+  }
+
+  /* 2. Создаем псевдоэлемент для анимации */
+  body::before {
+    content: '';
+    position: fixed; /* Позиционируем относительно окна браузера */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Помещаем его ЗА всем остальным контентом */
+
+    /* Переносим сюда стили фона для светлой темы */
+    background-image: 
+      radial-gradient(circle at 15% 50%, #bcd9ff 0%, transparent 25%), 
+      radial-gradient(circle at 85% 30%, #d0ffe05d 0%, transparent 25%);
+    background-repeat: no-repeat;
+    
+    /* Делаем фон больше, чтобы было что двигать */
+    background-size: 250% 250%; 
+    background-position: 50% 50%; /* Начальная позиция */
+    
+    /* 3. Применяем НОВУЮ анимацию, которая использует transform */
+    animation: transform-animation 20s ease-in-out infinite;
+  }
+
+  /* 4. Настраиваем фон для темной темы на том же псевдоэлементе */
+  .dark body::before {
     background-image:
       radial-gradient(circle at 20% 60%, rgba(255, 27, 38, 0.35) 0%, transparent 40%),
       radial-gradient(circle at 80% 35%, rgba(0, 255, 128, 0.25) 0%, transparent 50%);
   }
+
+  /* 5. Важный трюк! Чтобы z-index: -1 работал корректно и псевдоэлемент
+     не "провалился" под фон корневого элемента <html>, мы создаем
+     новый "контекст наложения" для body. */
+  body {
+    isolation: isolate;
+  }
 }
 
-@keyframes gradient-animation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* 6. Создаем новые @keyframes для анимации свойства transform */
+@keyframes transform-animation {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(20%, -15%); }
+  50%  { transform: translate(-20%, 10%); }
+  75%  { transform: translate(10%, 20%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* 7. (Бонус) Уважаем настройки пользователя и отключаем анимацию для тех, кто этого хочет */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
 }
