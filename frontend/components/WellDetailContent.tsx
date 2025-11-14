@@ -78,13 +78,16 @@ export const WellDetailContent: React.FC<{ well: Well | null }> = ({ well }) => 
               <div className="flex justify-between"><span>Текущая секция:</span><span className="font-semibold">{well.current_section_display}</span></div>
               <div><span className="font-semibold">Инженерный состав:</span><p className="text-gray-700 dark:text-gray-300 mt-1">{well.engineers}</p></div>
               <div><span className="font-semibold">Текущие работы:</span><p className="text-gray-700 dark:text-gray-300 mt-1">{well.current_operations}</p></div>
-              {/* <div>{well.last_summary_text && (
-                  <button 
-                      onClick={() => alert(well.last_summary_text)} 
-                      className="text-sm text-blue-600 hover:underline">
-                      Показать последнюю сводку
-                  </button>
-              )}</div> */}
+              <div>
+                    {well.last_summary_text && (
+                        // 2. Меняем onClick: теперь он открывает модальное окно
+                        <button 
+                            onClick={() => setIsModalOpen(true)} 
+                            className="text-sm text-blue-600 hover:underline dark:text-blue-300">
+                            Показать последнюю сводку
+                        </button>
+                    )}
+                  </div>
             </div>
 
             {/* Правая колонка */}
