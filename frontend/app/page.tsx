@@ -6,11 +6,11 @@ import { useState, useEffect } from 'react';
 import { Well, Task } from '../types';
 import { TaskCard } from '../components/TaskCard';
 import { WellCard } from '../components/WellCard'; // <-- Импортируем новую карточку
+import { InfoModal } from '../components/InfoModal';
 import { getWells,getTasks  } from '../services/api'; 
 
 import { TendersPanel } from '../components/TendersPanel';
 import { DocumentTextIcon } from '@heroicons/react/24/outline';
-
 
 
 export default function Home() {
@@ -18,6 +18,13 @@ export default function Home() {
   const [wells, setWells] = useState<Well[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isTendersPanelOpen, setIsTendersPanelOpen] = useState(false);
+
+
+  // 1. Добавляем состояние для модального окна сводки
+  const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+  const [summaryContent, setSummaryContent] = useState('');
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +39,15 @@ export default function Home() {
   const completedWells = wells.filter(well => !well.is_active);
 
 
+  // 2. Создаем функцию-обработчик для открытия модального окна
+  const handleShowSummary = (summaryText: string) => {
+    setSummaryContent(summaryText);
+    setIsSummaryModalOpen(true);
+  };
+  
+
   return (
+    <>
     <main className="mx-auto px-6 lg:px-10 py-8 relative">
       {/* КНОПКА ОТКРЫТИЯ ПАНЕЛИ */}
       <div className="fixed top-20 right-0 z-20">
@@ -84,9 +99,11 @@ export default function Home() {
           className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8"
         >
           {activeWells.map(well => (
-              <div key={well.id}>
-                <WellCard well={well} />
-              </div>
+              <WellCard 
+                key={well.id} 
+                well={well} 
+                onShowSummary={handleShowSummary} 
+              />
             ))}
         </div>
         {/* {wells && wells.length > 0 ? (
@@ -108,9 +125,11 @@ export default function Home() {
           className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8"
         >
           {completedWells.map(well => (
-              <div key={well.id}>
-                <WellCard well={well} />
-              </div>
+              <WellCard 
+                key={well.id} 
+                well={well} 
+                onShowSummary={handleShowSummary} 
+              />
             ))}
         </div>
         {/* {wells && wells.length > 0 ? (
@@ -125,5 +144,13 @@ export default function Home() {
       </div>
       
     </main>
+    <InfoModal
+        isOpen={isSummaryModalOpen}
+        onClose={() => setIsSummaryModalOpen(false)}
+        title="Последняя сводка"
+      >
+        {summaryContent}
+      </InfoModal>
+    </>
   );
 }

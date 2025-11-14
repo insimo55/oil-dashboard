@@ -1,7 +1,7 @@
 // frontend/components/WellCard.tsx
 'use client';
 import { Well } from '../types';
-import { ExclamationTriangleIcon, UsersIcon  } from '@heroicons/react/24/solid';
+import { ExclamationTriangleIcon, UsersIcon, DocumentTextIcon  } from '@heroicons/react/24/solid';
 import Link from 'next/link'; 
 import { MotionWrap } from './MotionWrap';
 import { motion } from 'framer-motion';
@@ -21,7 +21,14 @@ const ProgressBar: React.FC<{ current: number; total: number }> = ({ current, to
   );
 };
 
-export const WellCard: React.FC<{ well: Well }> = ({ well }) => {
+
+interface WellCardProps {
+  well: Well;
+  onShowSummary: (summary: string) => void; // <-- Новый пропс
+}
+
+
+export const WellCard: React.FC<WellCardProps> = ({ well, onShowSummary }) => {
   // Определяем "статус" скважины по наличию проблем
   const hasIssues = well.nvp_incidents.length > 0 || well.has_overspending;
   const statusColor = !well.is_active
@@ -30,8 +37,21 @@ export const WellCard: React.FC<{ well: Well }> = ({ well }) => {
     ? 'border-red-500'   // Красный для активных с проблемами
     : 'border-green-500'; // Зеленый для активных без проблем
   const engineerList = well.engineers ? well.engineers.split(',').map(name => name.trim()) : [];
+
+
+
+  // 2. Создаем обработчик для кнопки
+  const handleSummaryClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // <-- Останавливаем стандартное поведение (переход по ссылке)
+    e.stopPropagation(); // <-- Останавливаем "всплытие" события до <Link>
+    if (well.last_summary_text) {
+      onShowSummary(well.last_summary_text);
+    }
+  };
+
+
+
   return (
-    <MotionWrap>
     <Link href={`/wells/${well.id}`} className="block h-full">
         <div className={`bg-white dark:bg-neutral-900/60 backdrop-blur-sm rounded-xl shadow-lg p-5 border-l-4 ${statusColor} transition-transform duration-300 hover:scale-105` }>
           {/* Шапка карточки */}
@@ -91,8 +111,16 @@ export const WellCard: React.FC<{ well: Well }> = ({ well }) => {
           <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Текущие работы:</p>
           <p className="text-gray-700 dark:text-gray-200">{well.current_operations || 'Нет данных'}</p>
         </div>
+        {well.last_summary_text && (
+                  <button 
+                      onClick={handleSummaryClick}
+                      className="flex-shrink-0 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700 transition-colors"
+                      title="Показать последнюю сводку"
+                  >
+                      <DocumentTextIcon className="w-6 h-6 text-blue-600 dark:text-blue-300" />
+                  </button>
+              )}
         </div>
     </Link>
-    </MotionWrap>
   );
 };

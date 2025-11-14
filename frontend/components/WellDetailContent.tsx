@@ -1,11 +1,13 @@
 'use client'
 
+import { useState } from 'react';
 import { getWellById } from '@/services/api'; // '@/' - это удобный псевдоним для корневой папки
 import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { formatDateTime } from '@/utils/formatters';
 import { HourBadge } from '@/components/HourBadge';
 import { formatDate } from '@/utils/formatters';
+import { InfoModal } from '@/components/InfoModal';
 import Image from 'next/image';
 import { Well } from '@/types';
 
@@ -35,7 +37,7 @@ import { Well } from '@/types';
 
 // Эта страница, как и главная, будет асинхронным серверным компонентом
 export const WellDetailContent: React.FC<{ well: Well | null }> = ({ well }) => {
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // Обработка случая, если скважина не найдена
   if (!well) {
     return (
@@ -51,6 +53,7 @@ export const WellDetailContent: React.FC<{ well: Well | null }> = ({ well }) => 
   }
 
   return (
+    <>
     <main className="min-h-screen bg-gray-100 dark:bg-neutral-900 p-6 lg:p-10">
       <div className="max-w-4xl mx-auto">
         {/* Кнопка "Назад" */}
@@ -75,13 +78,13 @@ export const WellDetailContent: React.FC<{ well: Well | null }> = ({ well }) => 
               <div className="flex justify-between"><span>Текущая секция:</span><span className="font-semibold">{well.current_section_display}</span></div>
               <div><span className="font-semibold">Инженерный состав:</span><p className="text-gray-700 dark:text-gray-300 mt-1">{well.engineers}</p></div>
               <div><span className="font-semibold">Текущие работы:</span><p className="text-gray-700 dark:text-gray-300 mt-1">{well.current_operations}</p></div>
-              <div>{well.last_summary_text && (
+              {/* <div>{well.last_summary_text && (
                   <button 
                       onClick={() => alert(well.last_summary_text)} 
                       className="text-sm text-blue-600 hover:underline">
                       Показать последнюю сводку
                   </button>
-              )}</div>
+              )}</div> */}
             </div>
 
             {/* Правая колонка */}
@@ -127,5 +130,14 @@ export const WellDetailContent: React.FC<{ well: Well | null }> = ({ well }) => 
         </div>
       </div>
     </main>
+    {/* 3. Рендерим наше модальное окно и передаем ему нужные пропсы */}
+      <InfoModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        title="Последняя сводка"
+      >
+        {well.last_summary_text}
+      </InfoModal>
+    </>
   );
 }
