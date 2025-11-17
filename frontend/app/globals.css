@@ -17,8 +17,8 @@
     /* Важно: фон не должен повторяться */
     background-repeat: no-repeat;
 
-    /* Чтобы фон был привязан к окну и не скроллился вместе с контентом */
-    background-attachment: fixed;
+    /* Убрали background-attachment: fixed для лучшей производительности */
+    /* background-attachment: fixed; */
   }
 
   .dark body {
@@ -30,5 +30,51 @@
       radial-gradient(circle at 20% 85%, rgba(192, 132, 252, 0.15) 0%, transparent 40%), /* Фиолетовый оттенок */
       radial-gradient(circle at 80% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);  /* Синий оттенок */
   }
+}
+
+/* Упрощенные CSS анимации вместо Framer Motion для лучшей производительности */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-from-top {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+.slide-in-from-right {
+  animation: slide-in-from-right 0.3s ease-out;
+}
+
+.slide-in-from-top-2 {
+  animation: slide-in-from-top 0.2s ease-out;
 }
 

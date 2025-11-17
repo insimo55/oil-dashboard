@@ -1,27 +1,24 @@
 // frontend/components/TaskCard.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { CalendarIcon, ClockIcon, ChevronDownIcon  } from '@heroicons/react/24/outline';
 import { Task } from '../types';
 import { formatDate, formatTime } from '../utils/formatters';
-import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
-import Image from 'next/image';
 
-export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
+export const TaskCard: React.FC<{ task: Task }> = memo(({ task }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const urgencyClass = task.is_urgent
-    ? 'border-red-400 bg-red-100 backdrop-blur-sm'
-    : 'border-yellow-400 bg-yellow-100 backdrop-blur-sm';
+    ? 'border-red-400 bg-red-100'
+    : 'border-yellow-400 bg-yellow-100';
 
   return (
-    // Корневой div. Убрали MotionWrap. Добавили стили для выравнивания и эффектов.
     <div
       className={`
         p-5 rounded-xl shadow-lg border-l-4 
-        transition-all duration-300 hover:shadow-xl hover:-translate-y-1 
+        transition-shadow duration-200 hover:shadow-xl
         ${urgencyClass} 
         h-full flex flex-col
       `}
@@ -32,13 +29,9 @@ export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
           {task.customer}
         </p>
         {task.is_urgent && (
-            <div className="">
-                <span className="text-xs font-bold text-red-700 bg-red-200/70 px-2.5 py-1 rounded-full">
-                  Срочно
-                </span>
-                <Image src="/Alert.gif"  alt="attention animation" width={50} height={50} unoptimized className='absolute right-[20%] top-[4%]'/>
-            </div>
-
+            <span className="text-xs font-bold text-red-700 bg-red-200/70 px-2.5 py-1 rounded-full animate-pulse">
+              Срочно
+            </span>
         )}
       </div>
 
@@ -60,22 +53,14 @@ export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
         </button>
       )}
 
-      {/* АНИМИРОВАННЫЙ БЛОК С ДЕТАЛЯМИ */}
-      <AnimatePresence>
-        {isExpanded && task.details && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div className="prose prose-sm max-w-none text-gray-700 bg-gray-50/50 p-3 rounded-md mb-4">
-              <p className='whitespace-pre-line'>{task.details}</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>  
+      {/* БЛОК С ДЕТАЛЯМИ (упрощенная анимация через CSS) */}
+      {isExpanded && task.details && (
+        <div className="overflow-hidden animate-in fade-in slide-in-from-top-2">
+          <div className="prose prose-sm max-w-none text-gray-700 bg-gray-50/50 p-3 rounded-md mb-4">
+            <p className='whitespace-pre-line'>{task.details}</p>
+          </div>
+        </div>
+      )}  
       {/* Нижняя часть: дата, время. Прижимается к низу. */}
       <div className="mt-auto pt-4 border-t border-gray-200/80 flex justify-between text-sm text-gray-700">
         <div className="flex items-center">
@@ -90,4 +75,6 @@ export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
       </div>
     </div>
   );
-};
+});
+
+TaskCard.displayName = 'TaskCard';

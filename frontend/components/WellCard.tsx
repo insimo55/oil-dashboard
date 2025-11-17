@@ -1,21 +1,18 @@
 // frontend/components/WellCard.tsx
 'use client';
+import { memo } from 'react';
 import { Well } from '../types';
 import { ExclamationTriangleIcon, UsersIcon, DocumentTextIcon  } from '@heroicons/react/24/solid';
 import Link from 'next/link'; 
-import { MotionWrap } from './MotionWrap';
-import { motion } from 'framer-motion';
 
-// Компонент для отображения прогресс-бара
+// Компонент для отображения прогресс-бара (убрали Framer Motion для производительности)
 const ProgressBar: React.FC<{ current: number; total: number }> = ({ current, total }) => {
   const percentage = total > 0 ? (current / total) * 100 : 0;
   return (
     <div className="w-full bg-gray-200 rounded-full h-3">
-      <motion.div 
-        className="bg-gradient-to-r from-sky-500 to-blue-600 h-3 rounded-full" 
-        initial={{ width: 0 }}
-        animate={{ width: `${percentage}%` }}
-        transition={{ duration: 1, ease: "easeInOut" }}
+      <div 
+        className="bg-gradient-to-r from-sky-500 to-blue-600 h-3 rounded-full transition-[width] duration-300"
+        style={{ width: `${percentage}%` }}
       />
     </div>
   );
@@ -28,7 +25,7 @@ interface WellCardProps {
 }
 
 
-export const WellCard: React.FC<WellCardProps> = ({ well, onShowSummary }) => {
+export const WellCard: React.FC<WellCardProps> = memo(({ well, onShowSummary }) => {
   // Определяем "статус" скважины по наличию проблем
   const hasIssues = well.nvp_incidents.length > 0 || well.has_overspending;
   const statusColor = !well.is_active
@@ -37,8 +34,6 @@ export const WellCard: React.FC<WellCardProps> = ({ well, onShowSummary }) => {
     ? 'border-red-500'   // Красный для активных с проблемами
     : 'border-green-500'; // Зеленый для активных без проблем
   const engineerList = well.engineers ? well.engineers.split(',').map(name => name.trim()) : [];
-
-
 
   // 2. Создаем обработчик для кнопки
   const handleSummaryClick = (e: React.MouseEvent) => {
@@ -49,11 +44,9 @@ export const WellCard: React.FC<WellCardProps> = ({ well, onShowSummary }) => {
     }
   };
 
-
-
   return (
     <Link href={`/wells/${well.id}`} className="block h-full">
-        <div className={`bg-white dark:bg-neutral-900/60 backdrop-blur-sm rounded-xl shadow-lg p-5 border-l-4 ${statusColor} transition-transform duration-300 hover:scale-105` }>
+        <div className={`bg-white dark:bg-neutral-900/60 rounded-xl shadow-lg p-5 border-l-4 ${statusColor} transition-shadow duration-200 hover:shadow-xl` }>
           {/* Шапка карточки */}
           <div className="flex justify-between items-start mb-3">
             <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">{well.name}</h3>
@@ -123,4 +116,6 @@ export const WellCard: React.FC<WellCardProps> = ({ well, onShowSummary }) => {
         </div>
     </Link>
   );
-};
+});
+
+WellCard.displayName = 'WellCard';

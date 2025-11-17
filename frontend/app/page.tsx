@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Well, Task } from '../types';
 import { TaskCard } from '../components/TaskCard';
 import { WellCard } from '../components/WellCard'; // <-- Импортируем новую карточку
@@ -19,12 +19,9 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isTendersPanelOpen, setIsTendersPanelOpen] = useState(false);
 
-
   // 1. Добавляем состояние для модального окна сводки
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [summaryContent, setSummaryContent] = useState('');
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,15 +32,15 @@ export default function Home() {
     fetchData();
   }, []);
 
-  const activeWells = wells.filter(well => well.is_active);
-  const completedWells = wells.filter(well => !well.is_active);
+  // Мемоизируем фильтрацию для избежания лишних пересчетов
+  const activeWells = useMemo(() => wells.filter(well => well.is_active), [wells]);
+  const completedWells = useMemo(() => wells.filter(well => !well.is_active), [wells]);
 
-
-  // 2. Создаем функцию-обработчик для открытия модального окна
-  const handleShowSummary = (summaryText: string) => {
+  // 2. Мемоизируем функцию-обработчик для открытия модального окна
+  const handleShowSummary = useCallback((summaryText: string) => {
     setSummaryContent(summaryText);
     setIsSummaryModalOpen(true);
-  };
+  }, []);
   
 
   return (
