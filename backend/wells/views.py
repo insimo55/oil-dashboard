@@ -97,12 +97,12 @@ class WellViewSet(viewsets.ModelViewSet):
 
                     # --- ИЗМЕНЕНИЯ ЗДЕСЬ ---
                     # Запускаем AI-анализ ТОЛЬКО если есть КРИТИЧЕСКИЕ тревоги
-                    if alerts_dict['critical']:
-                        logging.info(f"Обнаружены критические тревоги, запускаем AI-анализ для скважины {well.name}...")
-                        ai_comment = get_ai_analysis(well)
-                        if ai_comment:
-                            full_message += "\n\n" + ai_comment
-                    # --------------------------
+                    # if alerts_dict['critical']:
+                    #     logging.info(f"Обнаружены критические тревоги, запускаем AI-анализ для скважины {well.name}...")
+                    #     ai_comment = get_ai_analysis(well)
+                    #     if ai_comment:
+                    #         full_message += "\n\n" + ai_comment
+                    # # --------------------------
                     
                     # Отправляем финальное сообщение (с комментарием AI или без)
                     logging.info("--- ГОТОВИМСЯ ОТПРАВИТЬ В TELEGRAM ---")
