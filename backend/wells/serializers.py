@@ -34,3 +34,8 @@ class TenderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tender
         fields = '__all__'
+
+class WellLinkTelegramSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=255)
+    telegram_chat_id = serializers.IntegerField() # Используем IntegerField для приема данных
+    telegram_topic_id = serializers.IntegerField(required=False, allow_null=True)

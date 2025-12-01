@@ -21,6 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
+TELEGRAM_ALERTS_BOT_TOKEN = os.environ.get('TELEGRAM_ALERTS_BOT_TOKEN')
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-1tj806!%%4mj43w(4a=jap2o(nht%txy+i6h^8g%-@eo@fbj*r')
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -43,6 +45,7 @@ if not DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
+    'nested_admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -176,3 +179,6 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
