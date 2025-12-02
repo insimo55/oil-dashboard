@@ -58,10 +58,10 @@ class WellViewSet(viewsets.ModelViewSet):
         # Логика авто-обновления секции (из Варианта 1)
         current_depth_from_parser = parsed_data.get('current_depth')
         if current_depth_from_parser is not None:
-            # Эта функция сама делает save, так что ее нужно доработать
-            # Давай пока закомментируем ее и посмотрим, решит ли это проблему
-            # update_well_section_by_depth(well, current_depth_from_parser) 
-            pass # Мы вернемся к этому
+            new_section = update_well_section_by_depth(well, current_depth_from_parser)
+            if new_section:
+                well.current_section = new_section
+                fields_to_update.append('current_section')
 
         # --- Шаг 4: Делаем ОДНО сохранение, если были изменения ---
         if fields_to_update:

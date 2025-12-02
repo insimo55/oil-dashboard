@@ -58,31 +58,25 @@ def validate_mud_parameters(well: Well, params: dict, current_depth: float) -> b
     
     return is_out_of_norm
 
-def update_well_section_by_depth(well: Well, current_depth: float) -> bool:
+def update_well_section_by_depth(well: Well, current_depth: float):
     """
-    Ищет в программе промывки интервал, соответствующий глубине,
-    и обновляет `current_section` у скважины.
-    Возвращает True, если секция была найдена и обновлена, иначе False.
+    Возвращает section_type, если по текущей глубине нужно обновить секцию.
+    Ничего не сохраняет!
     """
     if not hasattr(well, 'drilling_program'):
-        return False
+        return None
 
     from .models import DepthIntervalNorms
-    
-    # Ищем во всех интервалах всех секций этой скважины
+
     interval = DepthIntervalNorms.objects.filter(
         section__program__well=well,
         start_depth__lte=current_depth,
         end_depth__gte=current_depth
-    ).first() # first() вернет первый найденный или None
+    ).first()
 
     if interval:
         new_section_type = interval.section.section_type
-        # Обновляем, только если секция изменилась
-        if well.current_section != new_section_type:
-            well.current_section = new_section_type
-            well.save(update_fields=['current_section']) # Сохраняем только это поле
-            logger.info(f"Секция для скважины '{well.name}' автоматически обновлена на '{new_section_type}'")
-        return True
-    
-    return False
+        if new_section_type != well.current_section:
+            return new_section_type
+
+    return None
